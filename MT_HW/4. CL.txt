@@ -1,0 +1,60 @@
+.model small
+.stack 100h
+
+.data
+    input_msg db 10, 13, "Enter a number: $"
+    less_than_msg db 10, 13, "Less than 5$"
+    greater_than_msg db 10, 13, "Greater than 5$"
+    equal_to_msg db 10, 13, "Equal to 5$"
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    mov cl, 5
+
+input_loop:
+    
+    mov ah, 09h
+    lea dx, input_msg
+    int 21h
+
+    
+    mov ah, 01h
+    int 21h
+    sub al, 30h ; Convert ASCII character to integer
+
+    
+    cmp al, cl
+    jl less_than
+    jg greater_than
+    je equal_to
+
+less_than:
+    
+    mov ah, 09h
+    lea dx, less_than_msg
+    int 21h
+    jmp input_loop
+
+greater_than:
+    
+    mov ah, 09h
+    lea dx, greater_than_msg
+    int 21h
+    jmp input_loop
+
+equal_to:
+    
+    mov ah, 09h
+    lea dx, equal_to_msg
+    int 21h
+    jmp input_loop
+
+end_program:
+    
+    mov ah, 4Ch
+    int 21h
+
+end main
